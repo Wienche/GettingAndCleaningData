@@ -1,12 +1,14 @@
 ---
-title: "README"
+title: "CodeBook"
 author: "Lidwien van de Wijngaert"
 date: "1/24/2020"
-output: html_document
+output: md_document
 ---
-Dit is de readme file. 
 
-# DIT IS DE README FILE
+# Set working directory
+setwd("~/Desktop/R/Course3")
+
+Dit is de CODEBOOK. 
 
 
 
