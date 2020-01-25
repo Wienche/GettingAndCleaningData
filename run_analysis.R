@@ -6,9 +6,10 @@
 # 4. Appropriately labels the data set with descriptive variable names.
 # 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
+# Thanks to jcombardi on Github for much needed inspiration. 
+
 # Load libraries
 library(dplyr)
-library(plyr)
 
 #Set working directory 
 setwd("~/Desktop/R/Course3/GettingAndCleaningData")
@@ -85,9 +86,9 @@ val_colNames <- colnames(tbl_trainTest)
 #       activityId, subjectId or (|) contain mean or standard deviation. 
 
 val_meanStDev <- (grepl("activityId" , val_colNames) | 
-                  grepl("subjectId" , val_colNames) | 
-                  grepl("mean.." , val_colNames) | 
-                  grepl("std.." , val_colNames) 
+                          grepl("subjectId" , val_colNames) | 
+                          grepl("mean.." , val_colNames) | 
+                          grepl("std.." , val_colNames) 
 )
 
 count(val_meanStDev)
@@ -108,10 +109,10 @@ tbl_trainTestMeanStDev <- tbl_trainTest[ , val_meanStDev == TRUE]
 # the descriptive column name based on activityID. 
 
 tbl_trainTestMeanStDevActivityNames <- merge(tbl_trainTestMeanStDev, activityLabels,
-                              by='activityId',
-                              all.x=TRUE)
+                                             by='activityId',
+                                             all.x=TRUE)
 
-tbl_TidyData1 <- tbl_trainTestMeanStDevActivityNames[c(2,1,3:82)]
+tbl_TidyData1 <- tbl_trainTestMeanStDevActivityNames[c(2,1,82,3:81)]
 tbl_TidyData1 <- tbl_TidyData1[order(tbl_TidyData1$subjectId, tbl_TidyData1$activityId),]
 
 #--------------------------------------------------------------------------
@@ -131,7 +132,7 @@ tbl_TidyData1 <- tbl_TidyData1[order(tbl_TidyData1$subjectId, tbl_TidyData1$acti
 #5.1 Making a second tidy data set
 
 # Aggregate (using the mean) the data for each respondent and activitiy 
-tbl_TidyData2 <- aggregate(. ~subjectId + activityId, tbl_TidyData1, mean)
+tbl_TidyData2 <- aggregate(. ~subjectId + activityType, tbl_TidyData1, mean)
 
 # Sort the data using SubjectId (first) and activityId (second)
 tbl_TidyData2 <- tbl_TidyData2[order(tbl_TidyData2$subjectId, tbl_TidyData2$activityId),]
