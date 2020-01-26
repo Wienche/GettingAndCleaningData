@@ -1,12 +1,15 @@
 # This script, called run_analysis.R does the following.
 # 
+# 0. Preliminary steps
 # 1. Merges the training and the test sets to create one data set.
 # 2. Extracts only the measurements on the mean and standard deviation for each measurement.
 # 3. Uses descriptive activity names to name the activities in the data set
 # 4. Appropriately labels the data set with descriptive variable names.
 # 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
-# Thanks to jcombardi on Github for much needed inspiration. 
+# --------------------------
+# Step 0 - Preliminary steps
+# --------------------------
 
 # Load libraries
 library(dplyr)
@@ -17,10 +20,7 @@ setwd("~/Desktop/R/Course3/GettingAndCleaningData")
 # Clean up workspace
 rm(list=ls())
 
-# -----------------------------
-# Step 0 - Downloading the data
-# -----------------------------
-
+# Download the data
 if(!file.exists("./data")){dir.create("./data")}
 # Assign location of the data to fileURL and download the zip file. 
 fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
@@ -129,7 +129,7 @@ tbl_TidyData1 <- tbl_TidyData1[order(tbl_TidyData1$subjectId, tbl_TidyData1$acti
 #         for each activity and each subject.
 #--------------------------------------------------------------------------
 
-#5.1 Making a second tidy data set
+# 5.1 Making a second tidy data set
 
 # Aggregate (using the mean) the data for each respondent and activitiy 
 tbl_TidyData2 <- aggregate(. ~subjectId + activityType, tbl_TidyData1, mean)
@@ -137,7 +137,7 @@ tbl_TidyData2 <- aggregate(. ~subjectId + activityType, tbl_TidyData1, mean)
 # Sort the data using SubjectId (first) and activityId (second)
 tbl_TidyData2 <- tbl_TidyData2[order(tbl_TidyData2$subjectId, tbl_TidyData2$activityId),]
 
-#5.2 Write  tbl_TidyData2 to a txt file
+# 5.2 Write  tbl_TidyData2 to a txt file
 
 write.table(tbl_TidyData2, "tbl_TidyData2.txt", row.name=FALSE)
 
